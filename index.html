@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vật lí 10 - Luyện thuộc: Bài 10. Sự Rơi Tự Do</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- KaTeX hỗ trợ hiển thị công thức vật lí, căn thức, vectơ chuẩn sư phạm -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      -webkit-font-smoothing: antialiased;
+    }
+    .custom-quote {
+      border-left: 3.5px solid #e11d48;
+    }
+    .option-card {
+      transition: all 0.16s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .option-card:hover:not(:disabled) {
+      border-color: #f43f5e;
+      background-color: #fff1f2;
+      transform: translateY(-1px);
+    }
+    .option-card:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      60% { transform: scale(1.03); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .anim-bounce {
+      animation: bounceIn 0.28s ease-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .anim-shake {
+      animation: shake 0.35s ease-in-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-20 selection:bg-rose-100 selection:text-rose-900">
+
+  <!-- TOP BAR -->
+  <header class="w-full bg-white border-b border-slate-200/90 sticky top-0 z-40 px-4 py-2 text-xs text-slate-500 flex justify-between items-center shadow-xs">
+    <div class="flex items-center gap-2">
+      <span class="font-bold text-slate-800">Vật lí 10 Luyện Thuộc</span>
+      <span class="text-slate-300">•</span>
+      <span class="font-medium text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">Bài 10: Sự rơi tự do</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <!-- Nút âm thanh tương tác vui nhộn -->
+      <button id="sound-btn" onclick="toggleSound()" class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition cursor-pointer" title="Bật/Tắt âm thanh hiệu ứng">
+        <span id="sound-icon">🔊</span>
+        <span id="sound-text" class="text-[11px] hidden sm:inline">Âm thanh: Bật</span>
+      </button>
+      <button onclick="exportProgressReport()" class="text-rose-700 hover:text-rose-800 font-semibold flex items-center gap-1 cursor-pointer">
+        <span>📋 Báo cáo</span>
+      </button>
+      <button onclick="resetAllProgress()" class="text-slate-400 hover:text-rose-600 transition cursor-pointer">Đặt lại</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-2xl mx-auto px-4 pt-6">
+
+    <!-- VIEW 1: TRANG CHỦ & PHÂN CẤP ĐỘ ĐỀ BÀI (DASHBOARD) -->
+    <section id="view-dashboard" class="space-y-6">
+      
+      <!-- Tiêu đề lớn -->
+      <div>
+        <p class="text-[11px] font-semibold tracking-wider uppercase text-slate-400 mb-1">VẬT LÍ 10 · KẾT NỐI TRI THỨC · BÀI 10</p>
+        <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Luyện thuộc: Sự rơi tự do</h1>
+        <p class="text-[13px] text-slate-600 mt-2 leading-relaxed">
+          Đề gồm <strong>20 câu chuẩn phân hóa</strong>: <span class="font-medium text-slate-800">Cấp 1: 5 – 6 điểm (13 câu)</span>, <span class="font-medium text-slate-800">Cấp 2: 7 – 8 điểm (5 câu)</span> và <span class="font-medium text-slate-800">Cấp 3: 9 – 10 điểm (2 câu)</span>. Đảo vị trí câu hỏi và đáp án ngẫu nhiên. Một câu được tính là <em>đã thuộc</em> khi em trả lời đúng <span class="font-semibold text-rose-700">3 lần liên tiếp</span>. Câu trả lời sai sẽ quay lại vào cuối vòng để em khắc sâu kiến thức.
+        </p>
+      </div>
+
+      <!-- Slogan viền hồng đỏ như mẫu Claude Artifact -->
+      <div class="custom-quote bg-white pl-4 py-2.5 pr-3 rounded-r-md text-[13px] font-medium text-slate-700 shadow-xs">
+        Hãy học để trở thành người mà chính em tự hào.
+      </div>
+
+      <!-- Mục tiêu và ước mơ của em -->
+      <div class="bg-white rounded-xl p-5 border border-slate-200/90 shadow-xs space-y-4">
+        <h2 class="text-sm font-bold text-slate-800">Mục tiêu và ước mơ của em</h2>
+
+        <div>
+          <label class="block text-xs text-slate-500 mb-1.5 font-medium">Em muốn đạt mức điểm nào ở bài kiểm tra?</label>
+          <select id="user-target-score" onchange="saveUserProfile()" class="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition cursor-pointer">
+            <option value="">Chọn mục tiêu của em</option>
+            <option value="10">Chinh phục 10 điểm tuyệt đối</option>
+            <option value="9">Chinh phục 9.0 - 9.5 điểm</option>
+            <option value="8">Nắm chắc 8.0 - 8.5 điểm</option>
+            <option value="7">Nắm vững 7.0 điểm cơ bản</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-500 mb-1.5 font-medium">Em học để trở thành người như thế nào, hoặc để làm được điều gì cho mình và cho gia đình?</label>
+          <textarea id="user-dream" onchange="saveUserProfile()" rows="2" placeholder="Ví dụ: Em muốn đỗ vào trường đại học mơ ước, tự lập tài chính và giúp bố mẹ tự hào..." class="w-full text-xs text-slate-700 border border-slate-200 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition resize-none"></textarea>
+        </div>
+      </div>
+
+      <!-- Tên học sinh -->
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-xs">
+        <label class="block text-xs text-slate-500 mb-1.5 font-medium">Tên em (để giáo viên nhận ra bài nộp)</label>
+        <input type="text" id="user-name" onchange="saveUserProfile()" placeholder="Ví dụ: Nguyễn Văn A - Lớp 10A1" class="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition">
+      </div>
+
+      <!-- Thanh tiến độ tổng quan -->
+      <div class="bg-white rounded-xl p-4 border border-slate-200/90 shadow-xs space-y-2">
+        <div class="flex justify-between items-center text-xs">
+          <span id="total-mastered-text" class="font-medium text-slate-700">0 / 20 câu đã thuộc</span>
+          <span id="total-percent-text" class="font-bold text-rose-700">0%</span>
+        </div>
+        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+          <div id="total-progress-bar" class="bg-rose-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+        </div>
+        <p class="text-[11px] text-slate-400 italic" id="total-progress-sub">Hôm nay bắt đầu từ một câu đầu tiên nhé.</p>
+      </div>
+
+      <!-- Khung 3 Cấp Độ (Đúng chuẩn tỉ lệ: Cấp 1: 13 câu 5-6đ, Cấp 2: 5 câu 7-8đ, Cấp 3: 2 câu 9-10đ) -->
+      <div class="space-y-3.5" id="levels-container">
+        <!-- JS render 3 cấp -->
+      </div>
+
+      <!-- Tóm tắt lý thuyết cốt lõi (Collapse) -->
+      <div class="bg-white rounded-xl border border-slate-200/90 shadow-xs overflow-hidden">
+        <button onclick="toggleTheorySummary()" class="w-full px-4 py-3.5 text-left font-medium text-xs text-slate-700 hover:bg-slate-50 flex justify-between items-center transition cursor-pointer">
+          <span class="flex items-center gap-2">
+            <span>📖</span>
+            <span class="font-bold text-slate-800">Tóm tắt kiến thức trọng tâm Bài 10</span>
+          </span>
+          <span id="theory-chevron" class="text-slate-400 text-xs">Xem thêm ▼</span>
+        </button>
+        <div id="theory-content" class="hidden px-5 py-4 border-t border-slate-100 text-xs text-slate-600 leading-relaxed bg-slate-50/50 space-y-2">
+          <p><strong>1. Định nghĩa:</strong> Sự rơi tự do là sự rơi chỉ dưới tác dụng của trọng lực. Nếu sức cản không khí rất nhỏ so với trọng lực thì có thể coi là rơi tự do.</p>
+          <p><strong>2. Đặc điểm:</strong></p>
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Phương: thẳng đứng; Chiều: từ trên xuống dưới.</li>
+            <li>Tính chất: chuyển động thẳng nhanh dần đều không vận tốc đầu ($v_0 = 0$).</li>
+            <li>Tại cùng một nơi trên Trái Đất và gần mặt đất, mọi vật rơi tự do với cùng gia tốc trọng trường $\vec{g}$ (không phụ thuộc khối lượng, kích thước vật).</li>
+          </ul>
+          <p><strong>3. Các công thức rơi tự do:</strong></p>
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Vận tốc tức thời: $v = g \cdot t$ (tỉ lệ thuận với thời gian $t$).</li>
+            <li>Quãng đường rơi / độ cao: $h = s = \dfrac{1}{2} g t^2$.</li>
+            <li>Hệ thức độc lập thời gian: $v^2 = 2 g s \Rightarrow v = \sqrt{2 g s}$ (vận tốc tỉ lệ với căn bậc 2 của quãng đường).</li>
+            <li>Thời gian rơi chạm đất: $t = \sqrt{\dfrac{2h}{g}}$.</li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- VIEW 2: KHUNG LUYỆN BÀI (QUIZ VIEW) -->
+    <section id="view-quiz" class="hidden space-y-5">
+      <!-- Điều hướng thanh trên của Quiz -->
+      <div class="flex items-center justify-between">
+        <button onclick="exitQuiz()" class="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1 font-medium cursor-pointer transition">
+          <span>← Quay lại danh sách</span>
+        </button>
+        <div class="text-center">
+          <span id="quiz-header-badge" class="inline-block bg-slate-100 text-slate-700 font-semibold px-2.5 py-0.5 rounded-full text-[11px]">
+            Cấp 1 • Câu 1/13
+          </span>
+        </div>
+        <div class="text-[11px] font-medium text-emerald-600 flex items-center gap-1">
+          <span>Đảo câu & đáp án</span>
+          <span class="font-bold">✓</span>
+        </div>
+      </div>
+
+      <!-- Card hiển thị câu hỏi và đáp án -->
+      <div id="quiz-card" class="bg-white rounded-xl border border-slate-200/90 p-5 shadow-xs space-y-4">
+        
+        <!-- Hàng hiển thị mức thuộc (3 chấm tròn Spaced Repetition) -->
+        <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-2 text-xs text-slate-500">
+            <span>Độ thuộc:</span>
+            <div id="quiz-streak-dots" class="flex gap-1.5 items-center">
+              <!-- JS render 3 chấm -->
+            </div>
+          </div>
+          <span id="quiz-status-pill" class="text-[11px] font-medium text-slate-500 bg-slate-50 px-2.5 py-0.5 rounded border border-slate-200/60">
+            Cần đúng 3 lần liên tiếp
+          </span>
+        </div>
+
+        <!-- Nội dung câu hỏi (hỗ trợ KaTeX) -->
+        <div class="pt-1">
+          <h3 id="quiz-question-text" class="text-sm font-semibold text-slate-900 leading-relaxed">
+            Nội dung câu hỏi?
+          </h3>
+        </div>
+
+        <!-- Khung danh sách các lựa chọn (ĐÃ ĐẢO VỊ TRÍ) -->
+        <div id="quiz-options-container" class="space-y-2.5 pt-1">
+          <!-- JS render 4 lựa chọn -->
+        </div>
+
+        <!-- Khung giải thích sau khi trả lời -->
+        <div id="quiz-feedback" class="hidden pt-3 border-t border-slate-100 space-y-3">
+          <div id="quiz-feedback-banner" class="p-3.5 rounded-lg text-xs leading-relaxed">
+            <!-- Nội dung phản hồi -->
+          </div>
+          <button id="quiz-next-btn" onclick="nextQuestion()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold transition active:scale-[0.99] flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+            <span>Câu tiếp theo</span>
+            <span>→</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VIEW 3: MODAL BÁO CÁO NỘP BÀI -->
+    <div id="report-modal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-xl border border-slate-100 text-slate-800 anim-bounce">
+        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+          <h3 class="text-sm font-bold text-slate-900">Báo Cáo Học Tập & Nộp Bài</h3>
+          <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 text-lg leading-none cursor-pointer">&times;</button>
+        </div>
+        <div id="report-modal-content" class="text-xs space-y-2 text-slate-600 max-h-80 overflow-y-auto">
+          <!-- Báo cáo text -->
+        </div>
+        <div class="pt-2 flex gap-2">
+          <button onclick="copyReportText()" class="flex-1 py-2.5 bg-rose-700 hover:bg-rose-800 text-white font-medium rounded-lg text-xs transition cursor-pointer">
+            Sao chép gửi Thầy / Cô
+          </button>
+          <button onclick="closeReportModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium cursor-pointer">
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    /* =====================================================================
+       1. ÂM THANH WEB AUDIO API (ĐÚNG: VUI NHỘN, SAI: BẤT NGỜ DÍ DỎM)
+       ===================================================================== */
+    let audioContext = null;
+    let isSoundMuted = false;
+
+    function getAudioContext() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+      return audioContext;
+    }
+
+    function toggleSound() {
+      isSoundMuted = !isSoundMuted;
+      document.getElementById('sound-icon').innerText = isSoundMuted ? '🔇' : '🔊';
+      document.getElementById('sound-text').innerText = isSoundMuted ? 'Âm thanh: Tắt' : 'Âm thanh: Bật';
+      const btn = document.getElementById('sound-btn');
+      if (isSoundMuted) {
+        btn.classList.add('opacity-50');
+      } else {
+        btn.classList.remove('opacity-50');
+        playFunSound('correct');
+      }
+    }
+
+    function playFunSound(type) {
+      if (isSoundMuted) return;
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        if (type === 'correct') {
+          // ÂM ĐÚNG: giai điệu Fanfare tươi vui, cao trào
+          const freqs = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+          freqs.forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+            gain.gain.setValueAtTime(0, now + idx * 0.08);
+            gain.gain.linearRampToValueAtTime(0.18, now + idx * 0.08 + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.35);
+
+            osc.start(now + idx * 0.08);
+            osc.stop(now + idx * 0.08 + 0.35);
+          });
+        } else if (type === 'wrong') {
+          // ÂM SAI: hiệu ứng "boing - wah wah" hoạt hình trượt nốt dí dỏm, bất ngờ
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(360, now);
+          osc.frequency.exponentialRampToValueAtTime(110, now + 0.28);
+
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.linearRampToValueAtTime(0.15, now + 0.15);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+
+          osc.start(now);
+          osc.stop(now + 0.32);
+
+          // Nốt phụ nảy thêm tạo tiếng cười
+          setTimeout(() => {
+            if (isSoundMuted) return;
+            const osc2 = ctx.createOscillator();
+            const gain2 = ctx.createGain();
+            osc2.connect(gain2);
+            gain2.connect(ctx.destination);
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(180, ctx.currentTime);
+            osc2.frequency.exponentialRampToValueAtTime(70, ctx.currentTime + 0.16);
+            gain2.gain.setValueAtTime(0.16, ctx.currentTime);
+            gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.16);
+            osc2.start(ctx.currentTime);
+            osc2.stop(ctx.currentTime + 0.16);
+          }, 110);
+        } else if (type === 'mastered') {
+          // ÂM THUỘC (3/3 LẦN LIÊN TIẾP): chuông ngân mừng thành tích
+          const chords = [
+            [523.25, 659.25, 783.99],
+            [587.33, 739.99, 880.00],
+            [659.25, 830.61, 987.77],
+            [783.99, 987.77, 1174.66]
+          ];
+          chords.forEach((chord, step) => {
+            chord.forEach(freq => {
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(freq, now + step * 0.1);
+              gain.gain.setValueAtTime(0.08, now + step * 0.1);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + step * 0.1 + 0.4);
+              osc.start(now + step * 0.1);
+              osc.stop(now + step * 0.1 + 0.4);
+            });
+          });
+        }
+      } catch (err) {
+        console.warn("Lỗi audio:", err);
+      }
+    }
+
+    /* =====================================================================
+       2. NGÂN HÀNG CÂU HỎI BÀI 10 - SỰ RƠI TỰ DO (ĐÚNG TỈ LỆ 20 CÂU: 13-5-2)
+       ===================================================================== */
+    const LEVEL_DATA = [
+      {
+        levelIndex: 1,
+        name: "Cấp 1 · Chinh phục 5 – 6 điểm",
+        desc: "Cực dễ & cơ bản: định nghĩa, đặc điểm rơi tự do, công thức tính v, h, t một bước (13 câu).",
+        target: 6,
+        questions: [
+          {
+            id: "b10_c1",
+            q: "Sự rơi tự do là sự chuyển động của một vật:",
+            options: [
+              "Chỉ dưới tác dụng của trọng lực.",
+              "Khi rơi từ nơi rất cao xuống mặt đất.",
+              "Khi hợp lực tác dụng vào vật hướng thẳng đứng xuống dưới.",
+              "Khi vật có khối lượng rất lớn rơi từ trên cao xuống."
+            ],
+            correct: 0,
+            explain: "Định nghĩa chuẩn SGK: Sự rơi tự do là sự rơi chỉ dưới tác dụng của trọng lực."
+          },
+          {
+            id: "b10_c2",
+            q: "Chuyển động nào dưới đây được xem là sự rơi tự do?",
+            options: [
+              "Một viên phấn được thả rơi không vận tốc đầu trong không khí tĩnh.",
+              "Một cánh hoa rơi rụng lượn trong gió.",
+              "Một hòn sỏi được ném thẳng đứng từ dưới lên cao.",
+              "Một vận động viên đang nhảy dù từ máy bay."
+            ],
+            correct: 0,
+            explain: "Viên phấn thả rơi không vận tốc đầu có lực cản không khí rất nhỏ so với trọng lực của nó nên được coi là rơi tự do."
+          },
+          {
+            id: "b10_c3",
+            q: "Từ các công thức về rơi tự do không vận tốc ban đầu ($v = \\sqrt{2gs}$), ta suy ra vận tốc của vật rơi tự do:",
+            options: [
+              "Tỉ lệ thuận với căn bậc 2 của quãng đường rơi.",
+              "Tỉ lệ nghịch với quãng đường rơi.",
+              "Tỉ lệ thuận với quãng đường rơi bậc nhất.",
+              "Tỉ lệ thuận với bình phương quãng đường rơi."
+            ],
+            correct: 0,
+            explain: "Hệ thức độc lập thời gian: $v^2 = 2gs \\Rightarrow v = \\sqrt{2gs}$, do đó $v$ tỉ lệ thuận với căn bậc hai của quãng đường rơi $s$."
+          },
+          {
+            id: "b10_c4",
+            q: "Đặc điểm nào dưới đây KHÔNG PHẢI là đặc điểm của chuyển động rơi tự do?",
+            options: [
+              "Công thức tính vận tốc là $v = g \\cdot t^2$.",
+              "Chuyển động theo phương thẳng đứng, chiều từ trên xuống dưới.",
+              "Là chuyển động thẳng nhanh dần đều với vận tốc đầu $v_0 = 0$.",
+              "Tại một vị trí xác định gần mặt đất, mọi vật rơi tự do với cùng một gia tốc."
+            ],
+            correct: 0,
+            explain: "Công thức đúng của vận tốc rơi tự do là $v = g \\cdot t$ (bậc nhất theo thời gian $t$), không phải $g \\cdot t^2$."
+          },
+          {
+            id: "b10_c5",
+            q: "Ở cùng một nơi xác định trên Trái Đất, thời gian rơi tự do từ cùng một độ cao của các vật phụ thuộc vào:",
+            options: [
+              "Độ cao nơi thả vật rơi.",
+              "Khối lượng và kích thước của vật rơi.",
+              "Thể tích và mật độ của vật rơi.",
+              "Nhiệt độ và áp suất của môi trường."
+            ],
+            correct: 0,
+            explain: "Công thức thời gian rơi $t = \\sqrt{\\dfrac{2h}{g}}$. Vì $g$ cố định tại một nơi nên thời gian rơi chỉ phụ thuộc vào độ cao $h$."
+          },
+          {
+            id: "b10_c6",
+            q: "Tại cùng một vị trí xác định trên mặt đất và thả rơi tự do ở cùng một độ cao thì:",
+            options: [
+              "Hai vật rơi chạm đất với cùng thời gian và cùng vận tốc.",
+              "Vật nặng rơi nhanh hơn vật nhẹ.",
+              "Vật nhẹ rơi nhanh hơn vật nặng.",
+              "Vận tốc của hai vật luôn luôn không đổi trong khi rơi."
+            ],
+            correct: 0,
+            explain: "Gia tốc rơi tự do $g$ không phụ thuộc vào khối lượng vật, do đó hai vật rơi tự do từ cùng độ cao sẽ rơi chạm đất cùng lúc và cùng vận tốc."
+          },
+          {
+            id: "b10_c7",
+            q: "Một vật rơi tự do từ độ cao $h = 80\\text{ m}$ xuống đất. Lấy $g = 10\\text{ m/s}^2$. Thời gian để vật rơi đến mặt đất là:",
+            options: [
+              "$4\\text{ s}$.",
+              "$2\\text{ s}$.",
+              "$3\\text{ s}$.",
+              "$5\\text{ s}$."
+            ],
+            correct: 0,
+            explain: "Thời gian rơi: $t = \\sqrt{\\dfrac{2h}{g}} = \\sqrt{\\dfrac{2 \\times 80}{10}} = \\sqrt{16} = 4\\text{ s}$."
+          },
+          {
+            id: "b10_c8",
+            q: "Thả một vật rơi tự do từ độ cao $100\\text{ m}$ so với mặt đất. Lấy $g = 10\\text{ m/s}^2$. Quãng đường vật rơi được sau $2\\text{ s}$ là:",
+            options: [
+              "$20\\text{ m}$.",
+              "$30\\text{ m}$.",
+              "$10\\text{ m}$.",
+              "$5\\text{ m}$."
+            ],
+            correct: 0,
+            explain: "Quãng đường vật rơi: $s = \\dfrac{1}{2}gt^2 = \\dfrac{1}{2} \\times 10 \\times 2^2 = 20\\text{ m}$."
+          },
+          {
+            id: "b10_c9",
+            q: "Thả một hòn đá rơi tự do từ miệng một cái giếng cạn. Hòn đá chạm đáy giếng sau $3\\text{ s}$. Lấy $g = 9,8\\text{ m/s}^2$. Độ sâu của đáy giếng là:",
+            options: [
+              "$h = 44,1\\text{ m}$.",
+              "$h = 29,4\\text{ m}$.",
+              "$h = 88,2\\text{ m}$.",
+              "$h = 56,4\\text{ m}$."
+            ],
+            correct: 0,
+            explain: "Độ sâu giếng: $h = \\dfrac{1}{2}gt^2 = \\dfrac{1}{2} \\times 9,8 \\times 3^2 = 4,9 \\times 9 = 44,1\\text{ m}$."
+          },
+          {
+            id: "b10_c10",
+            q: "Một vật được thả rơi tự do, vận tốc của vật ngay khi chạm đất đo được là $v = 50\\text{ m/s}$. Lấy $g = 10\\text{ m/s}^2$. Độ cao thả vật ban đầu là:",
+            options: [
+              "$125\\text{ m}$.",
+              "$80\\text{ m}$.",
+              "$45\\text{ m}$.",
+              "$100\\text{ m}$."
+            ],
+            correct: 0,
+            explain: "Áp dụng $v^2 = 2gh \\Rightarrow h = \\dfrac{v^2}{2g} = \\dfrac{50^2}{2 \\times 10} = \\dfrac{2500}{20} = 125\\text{ m}$."
+          },
+          {
+            id: "b10_c11",
+            q: "Một vật được thả rơi tự do, vận tốc của vật khi chạm đất là $70\\text{ m/s}$. Cho $g = 10\\text{ m/s}^2$. Thời gian vật rơi là:",
+            options: [
+              "$7\\text{ s}$.",
+              "$8\\text{ s}$.",
+              "$4\\text{ s}$.",
+              "$3,5\\text{ s}$."
+            ],
+            correct: 0,
+            explain: "Thời gian rơi: $t = \\dfrac{v}{g} = \\dfrac{70}{10} = 7\\text{ s}$."
+          },
+          {
+            id: "b10_c12",
+            q: "Một vật rơi tự do khi chạm đất đạt vận tốc $40\\text{ m/s}$. Lấy $g = 10\\text{ m/s}^2$. Vật được thả rơi từ độ cao nào?",
+            options: [
+              "$80\\text{ m}$.",
+              "$160\\text{ m}$.",
+              "$40\\text{ m}$.",
+              "$100\\text{ m}$."
+            ],
+            correct: 0,
+            explain: "Độ cao nơi thả: $h = \\dfrac{v^2}{2g} = \\dfrac{40^2}{2 \\times 10} = \\dfrac{1600}{20} = 80\\text{ m}$."
+          },
+          {
+            id: "b10_c13",
+            q: "Hai giọt nước mưa từ mái nhà rơi tự do xuống đất. Chúng rời mái nhà cách nhau một khoảng thời gian $0,5\\text{ s}$. Khi tới đất, thời điểm chạm đất của chúng cách nhau một khoảng thời gian là:",
+            options: [
+              "$0,5\\text{ s}$.",
+              "$1,0\\text{ s}$.",
+              "$0,25\\text{ s}$.",
+              "Phụ thuộc vào chiều cao của mái nhà."
+            ],
+            correct: 0,
+            explain: "Vì hai giọt nước rơi từ cùng một độ cao nên thời gian rơi là như nhau ($t_1 = t_2$). Giọt thứ hai rơi sau $0,5\\text{ s}$ nên cũng sẽ chạm đất sau giọt thứ nhất đúng $0,5\\text{ s}$."
+          }
+        ]
+      },
+      {
+        id: "level_2",
+        name: "Cấp 2 · Chinh phục 7 – 8 điểm",
+        desc: "Thông hiểu & vận dụng: bài toán quãng đường giây cuối, 2s cuối, khoảng cách giữa các giọt nước (5 câu).",
+        target: 8,
+        questions: [
+          {
+            id: "b10_c14",
+            q: "Thả một vật rơi tự do, trong $2\\text{ s}$ cuối cùng trước khi chạm đất vật rơi được một quãng đường dài $60\\text{ m}$. Lấy $g = 10\\text{ m/s}^2$. Thời gian rơi tổng cộng của vật là:",
+            options: [
+              "$4\\text{ s}$.",
+              "$6\\text{ s}$.",
+              "$3\\text{ s}$.",
+              "$5\\text{ s}$."
+            ],
+            correct: 0,
+            explain: "Quãng đường rơi trong 2 s cuối: $\\Delta s = s(t) - s(t-2) = \\dfrac{1}{2}g t^2 - \\dfrac{1}{2}g (t-2)^2 = 5[t^2 - (t^2 - 4t + 4)] = 5(4t - 4) = 20t - 20 = 60 \\Rightarrow 20t = 80 \\Rightarrow t = 4\\text{ s}$."
+          },
+          {
+            id: "b10_c15",
+            q: "Thả rơi tự do một vật từ độ cao $h = 78,4\\text{ m}$. Lấy $g = 9,8\\text{ m/s}^2$. Quãng đường vật rơi được trong giây đầu tiên và trong giây cuối cùng lần lượt là:",
+            options: [
+              "$4,9\\text{ m}$ và $34,3\\text{ m}$.",
+              "$5\\text{ m}$ và $35\\text{ m}$.",
+              "$4,9\\text{ m}$ và $35\\text{ m}$.",
+              "$5\\text{ m}$ và $34,3\\text{ m}$."
+            ],
+            correct: 0,
+            explain: "Thời gian rơi toàn bộ: $t = \\sqrt{\\dfrac{2 \\times 78,4}{9,8}} = 4\\text{ s}$.\n- Giây đầu tiên: $s_1 = \\dfrac{1}{2}g(1^2) = 4,9\\text{ m}$.\n- Giây cuối cùng (từ giây thứ 3 đến giây thứ 4): $\\Delta s = s_4 - s_3 = 78,4 - \\dfrac{1}{2}(9,8)(3^2) = 78,4 - 44,1 = 34,3\\text{ m}$."
+          },
+          {
+            id: "b10_c16",
+            q: "Thả rơi một vật từ độ cao $80\\text{ m}$. Lấy $g = 10\\text{ m/s}^2$. Thời gian để vật rơi hết $20\\text{ m}$ đầu tiên và $20\\text{ m}$ cuối cùng lần lượt là:",
+            options: [
+              "$2\\text{ s}$ và $0,54\\text{ s}$.",
+              "$2\\text{ s}$ và $2\\text{ s}$.",
+              "$1\\text{ s}$ và $1\\text{ s}$.",
+              "$2\\text{ s}$ và $0,46\\text{ s}$."
+            ],
+            correct: 0,
+            explain: "Tổng thời gian rơi $80\\text{ m}$: $t = \\sqrt{\\dfrac{2 \\times 80}{10}} = 4\\text{ s}$.\n- $20\\text{ m}$ đầu: $t_1 = \\sqrt{\\dfrac{2 \\times 20}{10}} = 2\\text{ s}$.\n- Thời gian rơi $60\\text{ m}$ đầu: $t' = \\sqrt{\\dfrac{2 \\times 60}{10}} = \\sqrt{12} \\approx 3,46\\text{ s}$.\n- Thời gian đi $20\\text{ m}$ cuối: $\\Delta t = 4 - 3,46 = 0,54\\text{ s}$."
+          },
+          {
+            id: "b10_c17",
+            q: "Một vật được thả rơi tự do từ độ cao $1280\\text{ m}$ so với mặt đất. Lấy $g = 10\\text{ m/s}^2$. Khi vận tốc của vật đạt $40\\text{ m/s}$ thì vật còn cách mặt đất bao nhiêu mét?",
+            options: [
+              "$1200\\text{ m}$.",
+              "$80\\text{ m}$.",
+              "$1240\\text{ m}$.",
+              "$1180\\text{ m}$."
+            ],
+            correct: 0,
+            explain: "Quãng đường vật đã rơi được khi đạt $40\\text{ m/s}$: $s = \\dfrac{v^2}{2g} = \\dfrac{40^2}{2 \\times 10} = 80\\text{ m}$.\nVật còn cách mặt đất: $h' = 1280 - 80 = 1200\\text{ m}$."
+          },
+          {
+            id: "b10_c18",
+            q: "Hai viên bi sắt được thả rơi từ cùng một độ cao cách nhau một khoảng thời gian $1,5\\text{ s}$. Lấy $g = 10\\text{ m/s}^2$. Khoảng cách giữa hai viên bi sau khi viên bi thứ nhất rơi được $3,5\\text{ s}$ là:",
+            options: [
+              "$41,25\\text{ m}$ (làm tròn $41,3\\text{ m}$).",
+              "$61,25\\text{ m}$.",
+              "$20,0\\text{ m}$.",
+              "$35,5\\text{ m}$."
+            ],
+            correct: 0,
+            explain: "Sau khi bi 1 rơi được $t_1 = 3,5\\text{ s}$, bi 2 rơi được $t_2 = 3,5 - 1,5 = 2,0\\text{ s}$.\n- Quãng đường bi 1 rơi: $s_1 = \\dfrac{1}{2}(10)(3,5^2) = 61,25\\text{ m}$.\n- Quãng đường bi 2 rơi: $s_2 = \\dfrac{1}{2}(10)(2,0^2) = 20\\text{ m}$.\n- Khoảng cách giữa hai viên bi: $\\Delta s = 61,25 - 20 = 41,25\\text{ m}$."
+          }
+        ]
+      },
+      {
+        id: "level_3",
+        name: "Cấp 3 · Chinh phục 9 – 10 điểm",
+        desc: "Vận dụng cao: bài toán khinh khí cầu hạ xuống/bay lên, giây cuối rơi nửa độ cao toàn phần (2 câu).",
+        target: 10,
+        questions: [
+          {
+            id: "b10_c19",
+            q: "Trong giây cuối cùng, một vật rơi tự do đi được một đoạn đường bằng nửa độ cao toàn phần $h$ mà vật rơi được từ vị trí ban đầu. Lấy $g = 9,8\\text{ m/s}^2$. Độ cao $h$ thả vật xấp xỉ bằng:",
+            options: [
+              "$57,1\\text{ m}$.",
+              "$49,0\\text{ m}$.",
+              "$39,2\\text{ m}$.",
+              "$68,4\\text{ m}$."
+            ],
+            correct: 0,
+            explain: "Quãng đường trong giây cuối bằng $\\dfrac{h}{2} \\Rightarrow h - \\dfrac{1}{2}g(t-1)^2 = \\dfrac{1}{2}h \\Rightarrow \\dfrac{1}{2}h = \\dfrac{1}{2}g(t-1)^2$.\nMà $h = \\dfrac{1}{2}gt^2 \\Rightarrow \\dfrac{1}{4}gt^2 = \\dfrac{1}{2}g(t-1)^2 \\Rightarrow t^2 = 2(t-1)^2 \\Rightarrow t = 2 + \\sqrt{2} \\approx 3,414\\text{ s}$.\nĐộ cao: $h = \\dfrac{1}{2}(9,8)(3,414^2) \\approx 57,12\\text{ m}$."
+          },
+          {
+            id: "b10_c20",
+            q: "Một vật được thả rơi từ một khinh khí cầu đang ở độ cao $490\\text{ m}$. Lấy $g = 9,8\\text{ m/s}^2$. Nếu khí cầu đứng yên thời gian rơi là $t_1$; nếu khí cầu đang hạ xuống với tốc độ $4,9\\text{ m/s}$ thời gian rơi là $t_2$; nếu khí cầu đang bay lên thẳng đứng với tốc độ $4,9\\text{ m/s}$ thời gian rơi là $t_3$. Giá trị $(t_1 + 2t_2 + 3t_3)$ bằng:",
+            options: [
+              "$60,5\\text{ s}$.",
+              "$50,0\\text{ s}$.",
+              "$45,5\\text{ s}$.",
+              "$65,2\\text{ s}$."
+            ],
+            correct: 0,
+            explain: "- Trường hợp 1: đứng yên $\\Rightarrow 490 = 4,9 t_1^2 \\Rightarrow t_1 = 10\\text{ s}$.\n- Trường hợp 2: hạ xuống $\\Rightarrow v_0 = 4,9\\text{ m/s} \\Rightarrow 490 = 4,9t_2 + 4,9t_2^2 \\Rightarrow t_2^2 + t_2 - 100 = 0 \\Rightarrow t_2 \\approx 9,512\\text{ s}$.\n- Trường hợp 3: bay lên $\\Rightarrow v_0 = -4,9\\text{ m/s} \\Rightarrow 490 = -4,9t_3 + 4,9t_3^2 \\Rightarrow t_3^2 - t_3 - 100 = 0 \\Rightarrow t_3 \\approx 10,512\\text{ s}$.\nTổng: $t_1 + 2t_2 + 3t_3 = 10 + 2(9,512) + 3(10,512) = 10 + 19,024 + 31,536 = 60,56\\text{ s} \\approx 60,5\\text{ s}$."
+          }
+        ]
+      }
+    ];
+
+    /* =====================================================================
+       3. QUẢN LÝ TIẾN TRÌNH & BỘ NHỚ LOCAL STORAGE
+       ===================================================================== */
+    const STORAGE_KEY = 'vl10_bai10_roi_tu_do_state_v1';
+
+    let appState = {
+      user: {
+        name: '',
+        targetScore: '',
+        dream: ''
+      },
+      // { questionId: streakCount (0 đến 3) }
+      progress: {}
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          appState = JSON.parse(raw);
+        }
+      } catch (err) {
+        console.error("Lỗi đọc dữ liệu:", err);
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (err) {
+        console.error("Lỗi lưu dữ liệu:", err);
+      }
+    }
+
+    function saveUserProfile() {
+      appState.user.name = document.getElementById('user-name').value.trim();
+      appState.user.targetScore = document.getElementById('user-target-score').value;
+      appState.user.dream = document.getElementById('user-dream').value.trim();
+      saveState();
+    }
+
+    function resetAllProgress() {
+      if (confirm("Em có chắc chắn muốn đặt lại toàn bộ tiến độ để học lại từ đầu không?")) {
+        appState.progress = {};
+        saveState();
+        renderDashboard();
+      }
+    }
+
+    function getQuestionStreak(qId) {
+      return appState.progress[qId] || 0;
+    }
+
+    function isQuestionMastered(qId) {
+      return getQuestionStreak(qId) >= 3;
+    }
+
+    function getLevelTotal(level) {
+      return level.questions.length;
+    }
+
+    function getLevelMastered(level) {
+      return level.questions.filter(q => isQuestionMastered(q.id)).length;
+    }
+
+    function getTotalQuestions() {
+      return LEVEL_DATA.reduce((acc, lvl) => acc + lvl.questions.length, 0);
+    }
+
+    function getTotalMastered() {
+      let count = 0;
+      LEVEL_DATA.forEach(lvl => {
+        lvl.questions.forEach(q => {
+          if (isQuestionMastered(q.id)) count++;
+        });
+      });
+      return count;
+    }
+
+    /* =====================================================================
+       4. ĐIỀU HƯỚNG VIEW (ROUTING)
+       ===================================================================== */
+    let currentQuizQueue = [];
+    let currentQuizIndex = 0;
+    let currentLevelObj = null;
+
+    function showView(viewName) {
+      document.getElementById('view-dashboard').classList.add('hidden');
+      document.getElementById('view-quiz').classList.add('hidden');
+
+      if (viewName === 'dashboard') {
+        document.getElementById('view-dashboard').classList.remove('hidden');
+        renderDashboard();
+      } else if (viewName === 'quiz') {
+        document.getElementById('view-quiz').classList.remove('hidden');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function exitQuiz() {
+      showView('dashboard');
+    }
+
+    /* =====================================================================
+       5. RENDER TRANG CHỦ & CÁC CẤP ĐỘ
+       ===================================================================== */
+    function renderDashboard() {
+      document.getElementById('user-name').value = appState.user.name || '';
+      document.getElementById('user-target-score').value = appState.user.targetScore || '';
+      document.getElementById('user-dream').value = appState.user.dream || '';
+
+      const totalQ = getTotalQuestions();
+      const totalM = getTotalMastered();
+      const totalPercent = totalQ > 0 ? Math.round((totalM / totalQ) * 100) : 0;
+
+      document.getElementById('total-mastered-text').innerText = `${totalM} / ${totalQ} câu đã thuộc`;
+      document.getElementById('total-percent-text').innerText = `${totalPercent}%`;
+      document.getElementById('total-progress-bar').style.width = `${totalPercent}%`;
+
+      if (totalM > 0) {
+        document.getElementById('total-progress-sub').innerText = `Tuyệt vời! Em đã nắm chắc ${totalM} câu. Cố gắng đạt 20/20 câu nhé!`;
+      } else {
+        document.getElementById('total-progress-sub').innerText = `Hôm nay bắt đầu từ một câu đầu tiên nhé.`;
+      }
+
+      const container = document.getElementById('levels-container');
+      container.innerHTML = '';
+
+      LEVEL_DATA.forEach(lvl => {
+        const lvlMastered = getLevelMastered(lvl);
+        const lvlTotal = getLevelTotal(lvl);
+        const lvlPercent = Math.round((lvlMastered / lvlTotal) * 100);
+        const unmasteredCount = lvl.questions.filter(q => !isQuestionMastered(q.id)).length;
+
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-xl p-4 sm:p-5 border border-slate-200/90 shadow-xs space-y-3";
+        card.innerHTML = `
+          <div class="flex items-start justify-between">
+            <div class="pr-2">
+              <h3 class="text-sm font-bold text-slate-800">${lvl.name}</h3>
+              <p class="text-[12px] text-slate-500 mt-0.5 leading-relaxed">${lvl.desc}</p>
+            </div>
+            <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded whitespace-nowrap">
+              ${lvlMastered}/${lvlTotal} thuộc
+            </span>
+          </div>
+
+          <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+            <div class="bg-rose-600 h-full rounded-full transition-all duration-300" style="width: ${lvlPercent}%"></div>
+          </div>
+
+          <div class="pt-1 flex flex-wrap gap-2 text-xs">
+            <button onclick="startQuiz(${lvl.levelIndex}, 'continue')" class="px-3.5 py-1.5 rounded-lg font-medium transition cursor-pointer ${
+              unmasteredCount > 0 
+                ? 'bg-rose-700 hover:bg-rose-800 text-white shadow-xs' 
+                : 'bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default'
+            }">
+              ${unmasteredCount > 0 ? `Luyện tiếp (${unmasteredCount} câu đang luyện)` : '✓ Đã thuộc toàn bộ cấp'}
+            </button>
+            <button onclick="startQuiz(${lvl.levelIndex}, 'all')" class="px-3.5 py-1.5 border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 rounded-lg font-medium transition cursor-pointer">
+              Làm cả cấp (${lvlTotal} câu)
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      triggerMathRender();
+    }
+
+    function toggleTheorySummary() {
+      const box = document.getElementById('theory-content');
+      const chev = document.getElementById('theory-chevron');
+      if (box.classList.contains('hidden')) {
+        box.classList.remove('hidden');
+        chev.innerText = "Thu gọn ▲";
+      } else {
+        box.classList.add('hidden');
+        chev.innerText = "Xem thêm ▼";
+      }
+    }
+
+    /* =====================================================================
+       6. THUẬT TOÁN ĐẢO NGẪU NHIÊN & QUIZ SPACED REPETITION (3 LẦN ĐÚNG)
+       ===================================================================== */
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function startQuiz(levelIndex, mode) {
+      getAudioContext();
+      const level = LEVEL_DATA.find(l => l.levelIndex === levelIndex);
+      if (!level) return;
+
+      currentLevelObj = level;
+
+      let queue = [];
+      if (mode === 'continue') {
+        queue = level.questions.filter(q => !isQuestionMastered(q.id));
+        if (queue.length === 0) queue = [...level.questions];
+      } else {
+        queue = [...level.questions];
+      }
+
+      // Đảo câu hỏi ngẫu nhiên bằng thuật toán Fisher-Yates
+      currentQuizQueue = shuffleArray(queue);
+      currentQuizIndex = 0;
+
+      showView('quiz');
+      renderCurrentQuizQuestion();
+    }
+
+    let currentShuffledOptions = [];
+
+    function renderCurrentQuizQuestion() {
+      if (currentQuizIndex >= currentQuizQueue.length) {
+        showView('dashboard');
+        return;
+      }
+
+      const q = currentQuizQueue[currentQuizIndex];
+      const streak = getQuestionStreak(q.id);
+
+      // Badge đỉnh
+      document.getElementById('quiz-header-badge').innerText = `${currentLevelObj.name.split('·')[0].trim()} • Câu ${currentQuizIndex + 1}/${currentQuizQueue.length}`;
+
+      // Vẽ 3 chấm tròn thể hiện độ thuộc (Spaced Repetition)
+      const dotsContainer = document.getElementById('quiz-streak-dots');
+      dotsContainer.innerHTML = '';
+      for (let i = 1; i <= 3; i++) {
+        const dot = document.createElement('span');
+        dot.className = `inline-block w-2.5 h-2.5 rounded-full transition-all ${
+          i <= streak ? 'bg-emerald-500 ring-2 ring-emerald-200' : 'bg-slate-200'
+        }`;
+        dotsContainer.appendChild(dot);
+      }
+
+      document.getElementById('quiz-status-pill').innerText = streak >= 3 
+        ? "Đã thuộc (3/3)" 
+        : `Đã đúng ${streak}/3 lần liên tiếp`;
+
+      // Câu hỏi
+      document.getElementById('quiz-question-text').innerHTML = q.q;
+
+      // ĐẢO VỊ TRÍ 4 ĐÁP ÁN (A, B, C, D)
+      const rawOptions = q.options.map((optText, idx) => ({
+        text: optText,
+        isCorrect: idx === q.correct
+      }));
+      currentShuffledOptions = shuffleArray(rawOptions);
+
+      // Render danh sách lựa chọn
+      const optContainer = document.getElementById('quiz-options-container');
+      optContainer.innerHTML = '';
+
+      const letters = ['A', 'B', 'C', 'D'];
+      currentShuffledOptions.forEach((optObj, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "option-card w-full text-left p-3.5 rounded-lg border border-slate-200/90 bg-white flex items-start gap-3 text-xs leading-relaxed text-slate-800 font-medium group cursor-pointer";
+        btn.onclick = () => handleAnswer(idx);
+        btn.id = `quiz-opt-${idx}`;
+        btn.innerHTML = `
+          <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center font-bold text-[11px] shrink-0 group-hover:bg-slate-200 transition">
+            ${letters[idx]}
+          </span>
+          <span class="pt-0.5 text-slate-700 flex-1">${optObj.text}</span>
+        `;
+        optContainer.appendChild(btn);
+      });
+
+      // Ẩn bảng phản hồi
+      document.getElementById('quiz-feedback').classList.add('hidden');
+      const card = document.getElementById('quiz-card');
+      card.classList.remove('anim-shake', 'anim-bounce');
+
+      triggerMathRender();
+    }
+
+    function handleAnswer(selectedIndex) {
+      const q = currentQuizQueue[currentQuizIndex];
+      const selectedOption = currentShuffledOptions[selectedIndex];
+      const isCorrect = selectedOption.isCorrect;
+      const prevStreak = getQuestionStreak(q.id);
+
+      const quizCard = document.getElementById('quiz-card');
+
+      // Khóa và đổi màu nút
+      currentShuffledOptions.forEach((optObj, idx) => {
+        const btn = document.getElementById(`quiz-opt-${idx}`);
+        btn.onclick = null;
+        btn.classList.remove('option-card', 'cursor-pointer');
+        btn.disabled = true;
+
+        if (optObj.isCorrect) {
+          btn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-950');
+          btn.querySelector('span:first-child').className = "w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-[11px] shrink-0";
+        } else if (idx === selectedIndex) {
+          btn.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-950');
+          btn.querySelector('span:first-child').className = "w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center font-bold text-[11px] shrink-0";
+        } else {
+          btn.classList.add('opacity-40');
+        }
+      });
+
+      // Cập nhật chuỗi 3 lần đúng liên tiếp (Spaced Repetition)
+      let newStreak = prevStreak;
+      if (isCorrect) {
+        newStreak = Math.min(3, prevStreak + 1);
+        appState.progress[q.id] = newStreak;
+        quizCard.classList.add('anim-bounce');
+
+        if (newStreak === 3) {
+          playFunSound('mastered');
+        } else {
+          playFunSound('correct');
+        }
+      } else {
+        // Trả lời sai -> reset streak về 0, rung nhẹ và phát âm thanh hoạt hình bất ngờ
+        newStreak = 0;
+        appState.progress[q.id] = 0;
+        currentQuizQueue.push(q); // Tự động quay lại vào cuối vòng luyện
+        quizCard.classList.add('anim-shake');
+        playFunSound('wrong');
+      }
+      saveState();
+
+      // Cập nhật lại 3 chấm tròn
+      const dotsContainer = document.getElementById('quiz-streak-dots');
+      dotsContainer.innerHTML = '';
+      for (let i = 1; i <= 3; i++) {
+        const dot = document.createElement('span');
+        dot.className = `inline-block w-2.5 h-2.5 rounded-full transition-all ${
+          i <= newStreak ? 'bg-emerald-500 ring-2 ring-emerald-200' : 'bg-slate-200'
+        }`;
+        dotsContainer.appendChild(dot);
+      }
+
+      // Khung phản hồi
+      const feedback = document.getElementById('quiz-feedback');
+      const banner = document.getElementById('quiz-feedback-banner');
+      feedback.classList.remove('hidden');
+
+      if (isCorrect) {
+        banner.className = "p-3.5 rounded-lg text-xs leading-relaxed bg-emerald-50 border border-emerald-200 text-emerald-950";
+        banner.innerHTML = `
+          <div class="flex items-center gap-1.5 font-bold text-emerald-800 mb-1">
+            <span>🎉 Rất chính xác! Tuyệt vời!</span>
+            <span>${newStreak >= 3 ? '★ ĐÃ THUỘC (3/3 LẦN)' : `(${newStreak}/3 LẦN LIÊN TIẾP)`}</span>
+          </div>
+          <div>${q.explain}</div>
+        `;
+      } else {
+        banner.className = "p-3.5 rounded-lg text-xs leading-relaxed bg-rose-50 border border-rose-200 text-rose-950";
+        banner.innerHTML = `
+          <div class="flex items-center gap-1.5 font-bold text-rose-800 mb-1">
+            <span>💡 Chưa chính xác rồi nè!</span>
+            <span>(Câu này sẽ quay lại ở cuối để em ghi nhớ thật sâu)</span>
+          </div>
+          <div><strong>Giải thích chi tiết:</strong> ${q.explain}</div>
+        `;
+      }
+
+      triggerMathRender();
+      feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function nextQuestion() {
+      currentQuizIndex++;
+      renderCurrentQuizQuestion();
+    }
+
+    function triggerMathRender() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ],
+          throwOnError: false
+        });
+      } else {
+        setTimeout(triggerMathRender, 120);
+      }
+    }
+
+    /* =====================================================================
+       7. BÁO CÁO TIẾN ĐỘ & NỘP BÀI
+       ===================================================================== */
+    function exportProgressReport() {
+      const name = appState.user.name || 'Học sinh chưa nhập tên';
+      const target = appState.user.targetScore ? `${appState.user.targetScore} điểm` : 'Chưa đặt';
+      const dream = appState.user.dream || 'Chưa ghi chú';
+
+      const totalQ = getTotalQuestions();
+      const totalM = getTotalMastered();
+      const percent = Math.round((totalM / totalQ) * 100);
+
+      let levelLines = '';
+      LEVEL_DATA.forEach(lvl => {
+        const m = getLevelMastered(lvl);
+        const t = getLevelTotal(lvl);
+        const p = Math.round((m / t) * 100);
+        levelLines += `• ${lvl.name.split('·')[0].trim()}: ${m}/${t} câu thuộc (${p}%)\n`;
+      });
+
+      const nowStr = new Date().toLocaleString('vi-VN');
+      const reportText = `BÁO CÁO LUYỆN THUỘC BÀI 10 - SỰ RƠI TỰ DO (VẬT LÍ 10)
+Học sinh: ${name}
+Mục tiêu điểm số: ${target}
+Ước mơ / Động lực: ${dream}
+Thời gian nộp: ${nowStr}
+----------------------------------------
+Tổng số câu đã thuộc chắc chắn (3 lần liên tiếp): ${totalM}/${totalQ} câu (${percent}%)
+Tiến độ từng cấp độ:
+${levelLines}
+Đánh giá: ${percent === 100 ? 'Xuất sắc tuyệt đối! Đã thuộc 100% kiến thức Bài 10.' : percent >= 75 ? 'Rất tốt! Nắm vững chắc kiến thức trọng tâm.' : 'Cần tiếp tục kiên trì luyện tập thêm hàng ngày.'}`;
+
+      const modalContent = document.getElementById('report-modal-content');
+      modalContent.innerHTML = `
+        <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 font-mono text-[11px] whitespace-pre-wrap leading-relaxed">${reportText}</div>
+      `;
+
+      document.getElementById('report-modal').classList.remove('hidden');
+    }
+
+    function closeReportModal() {
+      document.getElementById('report-modal').classList.add('hidden');
+    }
+
+    function copyReportText() {
+      const pre = document.querySelector('#report-modal-content div');
+      if (pre) {
+        const text = pre.innerText;
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        
+        const btn = event.target;
+        const oldText = btn.innerText;
+        btn.innerText = "✓ Đã sao chép vào bộ nhớ tạm!";
+        setTimeout(() => { btn.innerText = oldText; }, 2000);
+      }
+    }
+
+    /* Khởi tạo */
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      renderDashboard();
+    });
+  </script>
+</body>
+</html>
+```
+
+### Các điểm nổi bật của ứng dụng:
+1. **Phân phối câu hỏi đúng chuẩn tỉ lệ**:
+   - **Cấp 1 (13 câu - Chinh phục 5-6 điểm)**: Định nghĩa sự rơi tự do, điều kiện bỏ qua lực cản, công thức $v=gt$, $h=\frac{1}{2}gt^2$, các phép tính $h, v, t$ trực tiếp từ độ cao giếng, mái nhà, vận tốc khi chạm đất.
+   - **Cấp 2 (5 câu - Chinh phục 7-8 điểm)**: Tính quãng đường trong 2 giây cuối ($60\text{ m}$), giây cuối cùng ($34,3\text{ m}$), thời gian rơi $20\text{ m}$ đầu và $20\text{ m}$ cuối ($0,54\text{ s}$), khoảng cách giữa 2 viên bi sắt rơi cách nhau $1,5\text{ s}$.
+   - **Cấp 3 (2 câu - Chinh phục 9-10 điểm)**: Bài toán vật rơi từ khinh khí cầu đang bay lên/hạ xuống với tốc độ $4,9\text{ m/s}$ tính $(t_1 + 2t_2 + 3t_3 = 60,5\text{ s})$ và bài toán trong giây cuối rơi được nửa độ cao toàn phần ($h \approx 57,1\text{ m}$).
+2. **Cơ chế lặp lại ngắt quãng (Spaced Repetition)**: Đúng 3 lần liên tiếp mới được tính là **ĐÃ THUỘC** (3 chấm xanh). Nếu trả lời sai, streak tự động reset về 0 và câu hỏi lập tức được xếp vào cuối hàng đợi để học sinh luyện lại ngay trong phiên.
+3. **Thuật toán đảo ngẫu nhiên kép**: Đảo thứ tự câu hỏi và đảo ngẫu nhiên 4 đáp án A, B, C, D mỗi lần xuất hiện.
+4. **Hệ thống âm thanh Web Audio API vui nhộn - bất ngờ**: Âm thanh "tadaa" chiến thắng khi đúng và âm thanh "boing-wah" hoạt hình trượt chân dí dỏm khi sai, có nút bật/tắt tiện lợi.
+5. **Hiển thị công thức KaTeX sắc nét**: Chuẩn $\vec{v}, \vec{g}$, căn bậc hai $\sqrt{\frac{2h}{g}}$, phân số và đơn vị $\text{m/s}^2$.
